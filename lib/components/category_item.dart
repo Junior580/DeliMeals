@@ -29,8 +29,10 @@ class CategoryItem extends StatelessWidget {
               category.color.withOpacity(0.5),
               category.color,
             ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
-        child: Text(category.title,
-            style: Theme.of(context).textTheme.titleMedium),
+        child: Text(
+          category.title,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
     );
   }
