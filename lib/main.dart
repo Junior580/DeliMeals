@@ -10,27 +10,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'DeliMeals',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+          primarySwatch: Colors.pink,
+          fontFamily: 'Raleway',
+          canvasColor: const Color.fromRGBO(255, 254, 229, 1),
+          textTheme: ThemeData.light().textTheme.copyWith(
+                  titleMedium: const TextStyle(
+                fontSize: 20,
+                fontFamily: 'RobotoCondensed',
+              )),
+          colorScheme:
+              const ColorScheme.light().copyWith(secondary: Colors.amber)),
       home: const CategoriesScreen(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('DeliMeals'),
-      ),
-      body: const Center(child: Text('Navegar é preciso')),
     );
   }
 }
