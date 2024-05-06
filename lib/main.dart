@@ -5,12 +5,41 @@ import 'screens/meal_detail_screen.dart';
 import 'screens/tabs_screen.dart';
 import 'screens/settings_screen.dart';
 
+import 'models/meal.dart';
+import 'models/settings.dart';
+import 'data/dummy_data.dart';
+
 import 'utils/app_routes.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Settings settings = Settings();
+  List<Meal> _availableMeals = DUMMY_MEALS;
+
+  void _filterMeals(Settings settings) {
+    setState(() {
+      this.settings = settings;
+
+      _availableMeals = DUMMY_MEALS.where((element) {
+        final filterGluten = settings.isGlutenFree && !element.isGlutenFree;
+        final filterLactose = settings.isLactoseFree && !element.isLactoseFree;
+        final filterVegan = settings.isVegan && !element.isVegan;
+        final filterVegetarian = settings.isVegetarian && !element.isVegetarian;
+        return !filterGluten &&
+            !filterLactose &&
+            !filterVegan &&
+            !filterVegetarian;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +58,11 @@ class MyApp extends StatelessWidget {
               const ColorScheme.light().copyWith(secondary: Colors.amber)),
       routes: {
         AppRoutes.HOME: (ctx) => const TabScreen(),
-        AppRoutes.CATEGORIES_MEALS: (ctx) => const CategoriesMealsScreen(),
+        AppRoutes.CATEGORIES_MEALS: (ctx) =>
+            CategoriesMealsScreen(meals: _availableMeals),
         AppRoutes.MEAL_DETAIL: (ctx) => const MealDetailScreen(),
-        AppRoutes.SETTINGS: (ctx) => const SettingsScreen(),
+        AppRoutes.SETTINGS: (ctx) =>
+            SettingsScreen(onSettingsChanged: _filterMeals, settings: settings),
       },
     );
   }
